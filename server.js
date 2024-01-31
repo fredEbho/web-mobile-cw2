@@ -50,13 +50,17 @@ const MongoClient = require('mongodb').MongoClient;
 
 //connect to mongodb
 let db;
+
+//initialise collections for reuse
+let lessonsCollection
+let ordersCollection
 MongoClient.connect('mongodb+srv://freddy:7f7jA6dUicg5R51c@mycluster.duiazwk.mongodb.net/?retryWrites=true&w=majority', (err, client) => {
     db = client.db('coursework')
+    lessonsCollection = db.collection('lessons');
+    ordersCollection = db.collection('orders');
 })
 
-//initialise collections for reusability
-let lessonsCollection = db.collection('lessons');
-let ordersCollection = db.collection('orders');
+
 
 app.get('/', (req, res, next) => {
     res.send('Nothing here check other links.')
