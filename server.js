@@ -8,10 +8,12 @@ const path = require("path");
 const fs = require("fs");
 let port = process.env.PORT ?? 4000
 
+// log all requests
+app.use(logger('tiny'));
+
 // config Express.js
-// Cross-Origin Resource Sharing (CORS) Allows the server to respond to ANY request indicated by '*'
 app.use(express.json())
-app.set('port', port)
+// Cross-Origin Resource Sharing (CORS) Allows the server to respond to ANY request indicated by '*'
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -20,9 +22,6 @@ app.use((req, res, next) => {
 
     next();
 })
-
-// log requests
-app.use(logger('server - '));
 
 //mount the public path & let all public files have prefix of public
 app.use('/public', express.static('public'))
@@ -47,20 +46,19 @@ app.use(function (request, response, next) {
 
 // initialise mongo client
 const MongoClient = require('mongodb').MongoClient;
-
-//connect to mongodb
 let db;
 
 //initialise collections for reuse
 let lessonsCollection
 let ordersCollection
+
+//connect to mongodb
 MongoClient.connect('mongodb+srv://freddy:7f7jA6dUicg5R51c@mycluster.duiazwk.mongodb.net/?retryWrites=true&w=majority', (err, client) => {
     db = client.db('coursework')
     lessonsCollection = db.collection('lessons');
     ordersCollection = db.collection('orders');
     console.log("connected to mongodb");
 });
-
 
 
 app.get('/', (req, res, next) => {
