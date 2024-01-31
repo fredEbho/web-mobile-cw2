@@ -6,12 +6,12 @@ const app = express();
 let logger = require('morgan');
 const path = require("path");
 const fs = require("fs");
-const {query} = require("express");
 let port = process.env.PORT ?? 4000
 
 // config Express.js
 // Cross-Origin Resource Sharing (CORS) Allows the server to respond to ANY request indicated by '*'
 app.use(express.json())
+app.set('port', port)
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -58,7 +58,8 @@ MongoClient.connect('mongodb+srv://freddy:7f7jA6dUicg5R51c@mycluster.duiazwk.mon
     db = client.db('coursework')
     lessonsCollection = db.collection('lessons');
     ordersCollection = db.collection('orders');
-})
+    console.log("connected to mongodb");
+});
 
 
 
