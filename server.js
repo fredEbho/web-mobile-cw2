@@ -86,7 +86,7 @@ app.get('/lessons', (req, res, next) => {
 
 app.put('/lesson', (req, res, next) => {
     let lessonIds = req.body.lessonIds;
-    if (lessonIds != null && lessonIds.isArray()) {
+    if (lessonIds != null && Array.isArray(lessonIds)) {
         lessonsCollection.updateMany(
             {
                 _id: {$in: req.body.lessonIds}
