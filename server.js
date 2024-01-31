@@ -7,7 +7,7 @@ let logger = require('morgan');
 const path = require("path");
 const fs = require("fs");
 const {query} = require("express");
-let port = process.env.PORT ?? 3000
+let port = process.env.PORT ?? 4000
 
 // config Express.js
 // Cross-Origin Resource Sharing (CORS) Allows the server to respond to ANY request indicated by '*'
