@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 })
 
 // log requests
-app.use(logger('server'));
+app.use(logger('server - '));
 
 //mount the public path & let all public files have prefix of public
 app.use('/public', express.static('public'))
@@ -101,7 +101,7 @@ app.put('/lesson', (req, res, next) => {
             },
             (e, result) => {
                 if (e) return next(e)
-                res.send((result.result.n === 1) ? {msg: 'success'} : {msg: e.message})
+                res.send((result.result.n > 0) ? {msg: 'Successful'} : {msg: 'An error occurred.'})
             }
         )
     }
