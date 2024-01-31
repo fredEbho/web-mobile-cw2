@@ -114,9 +114,10 @@ app.get('/search', (req, res, next) => {
             }
         )
     }
-
-    res.status(400);
-    res.send("Please specify what to search with the query param 'q' ");
+    else{
+        res.status(400);
+        res.send("Please specify what to search with the query param 'q' ");
+    }
 
 
 })
