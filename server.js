@@ -84,10 +84,10 @@ app.get('/lessons', (req, res, next) => {
     )
 })
 
-app.put('/lesson/:lessonId', (req, res, next) => {
+app.put('/lesson/:lessonIds', (req, res, next) => {
     lessonsCollection.update(
         {
-            id: req.params.lessonId
+            _id: { $in: req.params.lessonIds }
         },
         {
             $inc: {
@@ -95,8 +95,8 @@ app.put('/lesson/:lessonId', (req, res, next) => {
             }
         },
         {
-            // tells mongodb to wait before callback function to process only 1 item
-            safe: true, multi: false
+            safe: true,
+            multi: true
         },
         (e, result) => {
             if (e) return next(e)
@@ -141,7 +141,7 @@ app.post('/order', (req, res, next) => {
     }
     else{
         res.status(400);
-        res.send("Kindly enter all required fields.");
+        res.send({error: "Kindly enter all required fields."});
     }
 
 })
