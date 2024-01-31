@@ -132,7 +132,7 @@ app.get('/order', (req, res, next) => {
 
 app.post('/order', (req, res, next) => {
     //ensure required parameters are passed before saving order
-    if (req.body.name != null && req.body.email != null && req.body.phone != null){
+    if (req.body.name != null && req.body.phone != null){
         ordersCollection.insert(req.body, (e, results) => {
                 if (e) return next(e)
                 res.send(results.ops)
