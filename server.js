@@ -26,6 +26,7 @@ app.use((req, res, next) => {
 //mount the public path & let all public files have prefix of public
 app.use('/public', express.static('public'))
 
+//serve files if request is targeted at public directory. Throw error if file not found
 app.use(function (request, response, next) {
     if (request.url.includes('public')){
         let filePath = path.join(__dirname, "public", request.url)
@@ -66,16 +67,7 @@ app.get('/', (req, res, next) => {
 })
 
 app.get('/lessons', (req, res, next) => {
-    let searchQuery = req.query.search;
-    let collectionQuery;
-    if (searchQuery != null && searchQuery.length > 0) {
-        collectionQuery = lessonsCollection.aggregate(createSearchPipeline(searchQuery));
-    }
-    else{
-        collectionQuery = lessonsCollection.find({});
-    }
-
-    collectionQuery.toArray((e, results) => {
+    lessonsCollection.find({}).toArray((e, results) => {
             if (e) return next(e)
             res.send(results)
         }
@@ -105,7 +97,7 @@ app.put('/lesson', (req, res, next) => {
     }
     else{
         res.status(400);
-        res.send({error: "Kindly specify lessonIds, also ensure it's an error."});
+        res.send({error: "Kindly specify lessonIds, also ensure it's an array."});
     }
 })
 
