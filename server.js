@@ -83,13 +83,13 @@ app.get('/lessons', (req, res, next) => {
         }
     )
 })
-
+const ObjectID = require('mongodb').ObjectID;
 app.put('/lesson', (req, res, next) => {
     let lessonIds = req.body.lessonIds;
     if (lessonIds != null && Array.isArray(lessonIds)) {
         lessonsCollection.updateMany(
             {
-                _id: {$in: req.body.lessonIds}
+                _id: {$in: req.body.lessonIds.map((id) => ObjectID(id))}
             },
             {
                 $inc: {
@@ -101,7 +101,7 @@ app.put('/lesson', (req, res, next) => {
             },
             (e, result) => {
                 if (e) return next(e)
-                res.send((result.result.n === 1) ? {msg: 'success'} : {msg: 'error'})
+                res.send((result.result.n === 1) ? {msg: 'success'} : {msg: e.message})
             }
         )
     }
