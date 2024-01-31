@@ -84,25 +84,31 @@ app.get('/lessons', (req, res, next) => {
     )
 })
 
-app.put('/lesson/:lessonIds', (req, res, next) => {
-    lessonsCollection.update(
-        {
-            _id: { $in: req.params.lessonIds }
-        },
-        {
-            $inc: {
-                spaces: -1
+app.put('/lesson', (req, res, next) => {
+    let lessonIds = req.body.lessonIds;
+    if (lessonIds != null && lessonIds.isArray()) {
+        lessonsCollection.updateMany(
+            {
+                _id: {$in: req.body.lessonIds}
+            },
+            {
+                $inc: {
+                    spaces: -1
+                }
+            },
+            {
+                safe: true,
+            },
+            (e, result) => {
+                if (e) return next(e)
+                res.send((result.result.n === 1) ? {msg: 'success'} : {msg: 'error'})
             }
-        },
-        {
-            safe: true,
-            multi: true
-        },
-        (e, result) => {
-            if (e) return next(e)
-            res.send((result.result.n === 1) ? {msg: 'success'} : {msg: 'error'})
-        }
-    )
+        )
+    }
+    else{
+        res.status(400);
+        res.send({error: "Kindly specify lessonIds, also ensure it's an error."});
+    }
 })
 
 app.get('/search', (req, res, next) => {
@@ -116,7 +122,7 @@ app.get('/search', (req, res, next) => {
     }
     else{
         res.status(400);
-        res.send("Kindly specify what to search with the query param 'q' ");
+        res.send({error: "Kindly specify what to search with the query param 'q' "});
     }
 
 
