@@ -3,13 +3,15 @@ const express = require('express');
 
 // create an Express.js instance
 const app = express();
-let logger = require('morgan');
 const path = require("path");
 const fs = require("fs");
 let port = process.env.PORT ?? 4000
 
 // log all requests
-app.use(logger('tiny'));
+app.use(function (request, response,next) {
+    console.log("In comes a "+request.method+" to "+request.url);
+    next();
+})
 
 // config Express.js
 app.use(express.json())
