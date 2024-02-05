@@ -7,14 +7,13 @@ const path = require("path");
 const fs = require("fs");
 let port = process.env.PORT ?? 4000
 
+// config Express.js
+app.use(express.json())
 // log all requests
 app.use(function (request, response,next) {
     console.log("In comes a "+request.method+" to "+request.url);
     next();
 })
-
-// config Express.js
-app.use(express.json())
 // Cross-Origin Resource Sharing (CORS) Allows the server to respond to ANY request indicated by '*'
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
