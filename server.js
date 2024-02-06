@@ -143,6 +143,14 @@ app.post('/order', (req, res, next) => {
 
 })
 
+app.post('/lessons', (req, res, next) => {
+    lessonsCollection.insert(req.body, (e, results) => {
+            if (e) return next(e)
+            res.send(results.ops)
+        }
+    )
+})
+
 
 app.listen(port, () => {
     console.log('express is running on port ' + port)
