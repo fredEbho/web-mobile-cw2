@@ -139,7 +139,7 @@ app.post('/order', (req, res, next) => {
     }
     else{
         res.status(400);
-        res.send({error: "Kindly enter all required fields."});
+        res.send("Kindly enter all required fields.");
     }
 
 })
