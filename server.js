@@ -76,15 +76,16 @@ app.get('/lessons', (req, res, next) => {
 })
 const ObjectID = require('mongodb').ObjectID;
 app.put('/lesson', (req, res, next) => {
-    let lessonIds = req.body.lessonIds;
-    if (lessonIds != null && Array.isArray(lessonIds)) {
+    let lessonId = req.body.lessonId;
+    let reduceByQuantity = parseInt(req.body.reduceByQuantity);
+    if (lessonId != null && reduceByQuantity != null) {
         lessonsCollection.updateMany(
             {
-                _id: {$in: req.body.lessonIds.map((id) => ObjectID(id))}
+                _id: ObjectID(lessonId)
             },
             {
                 $inc: {
-                    spaces: -1
+                    spaces: -reduceByQuantity
                 }
             },
             {
@@ -98,7 +99,7 @@ app.put('/lesson', (req, res, next) => {
     }
     else{
         res.status(400);
-        res.send({error: "Kindly specify lessonIds, also ensure it's an array."});
+        res.send({error: "Kindly specify lessonId && quantity to reduce by."});
     }
 })
 
