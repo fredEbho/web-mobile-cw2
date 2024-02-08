@@ -80,21 +80,23 @@ app.put('/lesson', (req, res, next) => {
     let reduceByQuantity = req.body.reduceByQuantity;
     if (lessonId != null && reduceByQuantity != null) {
         reduceByQuantity = parseInt(reduceByQuantity);
-        lessonsCollection.updateMany(
+        lessonsCollection.update(
             {
                 _id: ObjectID(lessonId)
             },
             {
+                //reduce quantity of lesson by the number of lesson sold
                 $inc: {
                     spaces: -reduceByQuantity
                 }
             },
             {
-                safe: true,
+                // tells mongodb to wait before callback function to process only 1 item
+                safe: true, multi: false
             },
             (e, result) => {
                 if (e) return next(e)
-                res.send((result.result.n > 0) ? {msg: 'Successful'} : {msg: 'An error occurred.'})
+                res.send((result.result.n === 1) ? {msg: 'Successful'} : {msg: 'An error occurred.'})
             }
         )
     }
