@@ -77,8 +77,9 @@ app.get('/lessons', (req, res, next) => {
 const ObjectID = require('mongodb').ObjectID;
 app.put('/lesson', (req, res, next) => {
     let lessonId = req.body.lessonId;
-    let reduceByQuantity = parseInt(req.body.reduceByQuantity);
+    let reduceByQuantity = req.body.reduceByQuantity;
     if (lessonId != null && reduceByQuantity != null) {
+        reduceByQuantity = parseInt(reduceByQuantity);
         lessonsCollection.updateMany(
             {
                 _id: ObjectID(lessonId)
